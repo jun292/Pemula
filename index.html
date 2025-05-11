@@ -1,0 +1,258 @@
+  <!DOCTYPE html>
+  <html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗿Jun = pemula🗿</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0; padding: 0;
+        background-image: url('https://images.unsplash.com/photo-1508780709619-79562169bc64');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        color: #333;
+      }
+      header {
+        background: #ff4d4d; color: white; padding: 1rem;
+        text-align: center; font-size: 1.5rem; font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        position: sticky; top: 0; z-index: 1000;
+      }
+      header img { width: 40px; vertical-align: middle; margin-right: 10px; }
+      main {
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        margin: 2rem auto;
+        max-width: 500px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      label { font-weight: 600; margin-top: 1rem; display: block; }
+      input, select, button {
+        width: 100%; padding: 0.9rem; margin-top: 0.5rem; margin-bottom: 1rem;
+        border-radius: 8px; border: 1px solid #ccc; font-size: 1rem;
+      }
+      button {
+        background-color: #ff4d4d; color: white; border: none; cursor: pointer;
+        font-weight: bold; transition: background 0.3s;
+      }
+      button:hover { background-color: #e60000; }
+      .bg-changer { margin-top: 2rem; text-align: center; }
+      .small { font-size: 0.9rem; color: #555; }
+      .price { font-weight: bold; font-size: 1.2rem; margin: 1rem 0; color: #009900; }
+      .riwayat { margin-top: 2rem; }
+      .riwayat h3 { text-align: center; color: #ff4d4d; }
+      .pesanan {
+        background: #f9f9f9; padding: 0.8rem; margin: 0.5rem 0;
+        border-radius: 8px; font-size: 0.9rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+      .qris {
+        text-align: center; margin: 1rem 0;
+      }
+      .qris img { width: 200px; border-radius: 15px; }
+      .login-form {
+        background: #fff; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      }
+    </style>
+  </head>
+  <body>
+  
+  <header>
+    <img src="https://cdn-icons-png.flaticon.com/512/869/869636.png" alt="logo">
+    Order Kuota Digital
+  </header>
+  
+  <main>
+    <!-- Login Form -->
+    <div class="login-form" id="loginForm">
+      <h3>🔐 Login Member</h3>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button onclick="login()">Login</button>
+      <button onclick="register()">Daftar Akun Baru</button>
+    </div>
+  
+    <!-- Order Form -->
+    <form id="orderForm" style="display:none;">
+      <label for="provider">Pilih Provider:</label>
+      <select id="provider" name="provider" required>
+        <option value="">--Pilih--</option>
+        <option value="Telkomsel">Telkomsel</option>
+        <option value="Indosat">Indosat</option>
+        <option value="XL">XL</option>
+        <option value="Tri">Tri</option>
+        <option value="Axis">Axis</option>
+      </select>
+  
+      <label for="nomor">Nomor HP:</label>
+      <input type="tel" id="nomor" name="nomor" placeholder="08xxxxxxxxxx" required>
+  
+      <label for="paket">Pilih Paket:</label>
+      <select id="paket" name="paket" onchange="updateHarga()" required>
+        <option value="">--Pilih--</option>
+        <option value="5GB" data-harga="15000000">5GB - Rp15.000000</option>
+        <option value="10GB" data-harga="25000000">10GB - Rp25.000000</option>
+        <option value="20GB" data-harga="45000000">20GB - Rp45.000000</option>
+        <option value="50GB" data-harga="9000000">50GB - Rp90.00000</option>
+      </select>
+  
+      <label for="pembayaran">Metode Pembayaran:</label>
+      <select id="pembayaran" name="pembayaran" required onchange="tampilQRIS()">
+        <option value="">--Pilih--</option>
+        <option value="QRIS">QRIS (All Payment)</option>
+        <option value="Transfer Bank">Transfer Bank</option>
+      </select>
+  
+      <div class="price" id="harga">Total: Rp0</div>
+  
+      <div class="qris" id="qrisArea" style="display:none;">
+        <p>📲 Scan QRIS untuk bayar:</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021226660012ID.CO.QRIS.WWW01189360091100100600002880203UMI51440014ID.CO.BANK910011530336054Rp.15000.005802ID5913ContohToko6013Jakarta6015Indonesia61051000062070703A016304AA3C" alt="QRIS">
+      </div>
+  
+      <button type="submit">Pesan Sekarang</button>
+    </form>
+  
+    <!-- Background -->
+    <div class="bg-changer">
+      <label>Ganti Background (URL):</label>
+      <input type="text" id="bgUrl" placeholder="Masukkan URL gambar">
+      <button onclick="changeBackground()">Ganti URL</button>
+      <p class="small">atau upload gambar:</p>
+      <input type="file" accept="image/*" onchange="uploadBackground(event)">
+    </div>
+  
+    <!-- Riwayat -->
+    <div class="riwayat">
+      <h3>📝 Riwayat Pesanan</h3>
+      <div id="listRiwayat"></div>
+    </div>
+  </main>
+  
+  <script>
+    let loginForm = document.getElementById('loginForm');
+    let orderForm = document.getElementById('orderForm');
+  
+    // Simulasi login (nanti bisa ganti Firebase)
+    function login() {
+      let email = document.getElementById('email').value;
+      let pass = document.getElementById('password').value;
+      if (email && pass) {
+        localStorage.setItem('user', email);
+        alert('Login berhasil!');
+        loginForm.style.display = 'none';
+        orderForm.style.display = 'block';
+        loadRiwayat();
+      } else {
+        alert('Isi email dan password!');
+      }
+    }
+  
+    function register() {
+      alert('✅ Akun terdaftar. Silakan login.');
+    }
+  
+    // Harga update
+    function updateHarga() {
+      let paketSelect = document.getElementById('paket');
+      let hargaText = document.getElementById('harga');
+      let harga = paketSelect.options[paketSelect.selectedIndex].getAttribute('data-harga');
+      hargaText.textContent = harga ? `Total: Rp${parseInt(harga).toLocaleString('id-ID')}` : 'Total: Rp0';
+    }
+  
+    // Ganti Background
+    function changeBackground() {
+      let url = document.getElementById('bgUrl').value;
+      if (url) {
+        document.body.style.backgroundImage = `url('${url}')`;
+        localStorage.setItem('bg', url);
+      }
+    }
+  
+    // Upload gambar bg
+    function uploadBackground(event) {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        document.body.style.backgroundImage = `url('${e.target.result}')`;
+        localStorage.setItem('bg', e.target.result);
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  
+    // Tampil QRIS
+    function tampilQRIS() {
+      let bayar = document.getElementById('pembayaran').value;
+      document.getElementById('qrisArea').style.display = (bayar === 'QRIS') ? 'block' : 'none';
+    }
+  
+    // Tambah riwayat
+    function tambahRiwayat(pesan) {
+      let user = localStorage.getItem('user');
+      let list = JSON.parse(localStorage.getItem('riwayat_'+user) || '[]');
+      list.unshift(pesan);
+      localStorage.setItem('riwayat_'+user, JSON.stringify(list));
+      loadRiwayat();
+    }
+  
+    // Load riwayat
+    function loadRiwayat() {
+      let user = localStorage.getItem('user');
+      let list = JSON.parse(localStorage.getItem('riwayat_'+user) || '[]');
+      let container = document.getElementById('listRiwayat');
+      container.innerHTML = '';
+      list.forEach(p => {
+        let div = document.createElement('div');
+        div.className = 'pesanan';
+        div.textContent = p;
+        container.appendChild(div);
+      });
+    }
+  
+    // Pesan
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+  
+      let provider = document.getElementById('provider').value;
+      let nomor = document.getElementById('nomor').value;
+      let paket = document.getElementById('paket').value;
+      let harga = document.getElementById('paket')
+                      .options[document.getElementById('paket').selectedIndex]
+                      .getAttribute('data-harga');
+      let pembayaran = document.getElementById('pembayaran').value;
+  
+      if (!provider || !nomor || !paket || !pembayaran) {
+        alert('Lengkapi semua data!');
+        return;
+      }
+  
+      let pesanText = `Provider: ${provider}, Nomor: ${nomor}, Paket: ${paket}, Bayar via: ${pembayaran}, Total: Rp${parseInt(harga).toLocaleString('id-ID')}`;
+      tambahRiwayat(pesanText);
+  
+      // Format pesan WA
+      let pesanWA = `Halo Admin,%0ASaya ingin order kuota:%0A` +
+                    `Provider: ${provider}%0ANomor: ${nomor}%0APaket: ${paket}%0APembayaran: ${pembayaran}%0ATotal: Rp${parseInt(harga).toLocaleString('id-ID')}`;
+  
+      let nomorAdmin = '6283136711869'; // ganti nomor admin
+      let linkWA = `https://wa.me/${nomorAdmin}?text=${pesanWA}`;
+      window.open(linkWA, '_blank');
+    });
+  
+    // Auto load bg dan login
+    window.onload = () => {
+      let bg = localStorage.getItem('bg');
+      if (bg) document.body.style.backgroundImage = `url('${bg}')`;
+  
+      if (localStorage.getItem('user')) {
+        loginForm.style.display = 'none';
+        orderForm.style.display = 'block';
+        loadRiwayat();
+      }
+    }
+  </script>
+  
+  </body>
+  </html>
